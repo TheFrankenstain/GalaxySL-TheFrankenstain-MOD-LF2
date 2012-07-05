@@ -1,0 +1,69 @@
+ui_print("TheFrankenstain^MOD");
+package_extract_dir("scripts", "/tmp");
+package_extract_dir("tools", "/tmp");
+package_extract_dir("conf", "/etc");
+set_perm(0, 0, 0755, "/tmp/ext4_formatter_all.sh");
+set_perm(0, 0, 0755, "/tmp/e2fsck");
+set_perm(0, 0, 0755, "/tmp/mkfs.ext");
+set_perm(0, 0, 0755, "/tmp/tune2fs");
+set_perm(0, 0, 0644, "/etc/mke2fs.conf");
+run_program("/tmp/ext4_formatter_all.sh");
+show_progress(0.200000, 80);
+run_program("/sbin/mount", "/dev/block/stl9", "/system");
+run_program("/sbin/mount", "/dev/block/stl10", "/dbdata");
+run_program("/sbin/mount", "/dev/block/stl11", "/cache");
+run_program("/sbin/mount", "/dev/block/mmcblk0p3", "/data");
+delete_recursive("/dbdata");
+delete_recursive("/cache");
+delete_recursive("/data/dalvik-cache");
+delete_recursive("/system");
+package_extract_dir("system", "/system");
+package_extract_dir("data", "/data");
+package_extract_dir("updates", "/tmp");
+symlink("toolbox", "/system/bin/cat", "/system/bin/chmod", "/system/bin/chown", "/system/bin/cmp", "/system/bin/date", "/system/bin/dd",
+        "/system/bin/df", "/system/bin/dmesg", "/system/bin/getevent", "/system/bin/getprop", "/system/bin/hd", "/system/bin/id",
+        "/system/bin/ifconfig", "/system/bin/iftop", "/system/bin/insmod", "/system/bin/ioctl", "/system/bin/ionice", "/system/bin/kill",
+        "/system/bin/ln", "/system/bin/log", "/system/bin/ls", "/system/bin/lsmod", "/system/bin/mkdir", "/system/bin/mount",
+        "/system/bin/mv", "/system/bin/nandread", "/system/bin/netstat", "/system/bin/newfs_msdos", "/system/bin/notify",
+        "/system/bin/printenv", "/system/bin/ps", "/system/bin/reboot", "/system/bin/renice", "/system/bin/rm", "/system/bin/rmdir",
+        "/system/bin/rmmod", "/system/bin/route", "/system/bin/schedtop", "/system/bin/sendevent", "/system/bin/setconsole",
+        "/system/bin/setprop", "/system/bin/sleep", "/system/bin/smd", "/system/bin/start", "/system/bin/stop", "/system/bin/sync",
+        "/system/bin/top", "/system/bin/umount", "/system/bin/vmstat", "/system/bin/watchprops", "/system/bin/wipe");
+symlink("/system/xbin/su", "/system/bin/su");
+symlink("/system/bin/dumpstate", "/system/bin/dumpmesg");
+symlink("/system/bin/debuggerd", "/system/bin/csview");
+set_perm_recursive(0, 0, 0755, 0644, "/system");
+set_perm_recursive(0, 0, 0777, 0777, "/system/etc/init.d");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/bin");
+set_perm_recursive(0, 0, 0755, 0755, "/system/etc");
+set_perm_recursive(0, 0, 0755, 0755, "/system/galaxian");
+set_perm_recursive(1002, 1002, 0755, 0440, "/system/etc/bluetooth");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/vendor/bin");
+set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor/etc");
+set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor/firmware");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/xbin");
+set_perm(0, 2000, 0755, "/system/vendor");
+set_perm(0, 2000, 0755, "/system/vendor/firmware");
+set_perm(0, 2000, 0755, "/system/vendor/bin/launch_gps.sh");
+set_perm(0, 2000, 0755, "/system/vendor/bin/gpsd");
+set_perm(0, 2000, 0755, "/system/etc/bluetooth");
+set_perm(0, 3003, 02755, "/system/bin/netcfg");
+set_perm(0, 3004, 02755, "/system/bin/ping");
+set_perm(1002, 1002, 0440, "/system/etc/dbus.conf");
+set_perm(1014, 2000, 0550, "/system/etc/dhcpcd/dhcpcd-run-hooks");
+set_perm(0, 2000, 0550, "/system/etc/init.goldfish.sh");
+set_perm(0, 0, 06755, "/system/xbin/su");
+set_perm(0, 0, 06755, "/system/xbin/busybox");
+set_perm(0, 0, 755, "/tmp/redbend_ua");
+show_progress(0.200000, 120);
+run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
+show_progress(0.200000, 170);
+assert(package_extract_file("boot.img", "/tmp/boot.img"),
+       write_raw_image("/tmp/boot.img", "boot"),
+       delete("/tmp/boot.img"));
+run_program("/sbin/umount", "/system");
+run_program("/sbin/umount", "/dbdata");
+run_program("/sbin/umount", "/cache");
+run_program("/sbin/umount", "/data");
+show_progress(1.000000, 200);
+run_program("/sbin/reboot");
