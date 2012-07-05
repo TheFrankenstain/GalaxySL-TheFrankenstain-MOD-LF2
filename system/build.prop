@@ -20,8 +20,8 @@ ro.product.board=GT-I9003
 ro.product.cpu.abi=armeabi-v7a
 ro.product.cpu.abi2=armeabi
 ro.product.manufacturer=samsung
-ro.product.locale.language=en
-ro.product.locale.region=GB
+ro.product.locale.language=ru
+ro.product.locale.region=RU
 ro.wifi.channels=
 ro.board.platform=omap3
 # ro.build.product is obsolete; use ro.product.device
